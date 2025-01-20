@@ -8,10 +8,10 @@ import { AppService } from './app.service';
 
 import config, { EnumConfig } from '../config/config';
 
-// import { User } from '../modules/users/entities/users.entity';
+import { User } from '../modules/users/entities/users.entity';
 
-import { NesModule } from '../nes/nes.module';
-import { UsersModule } from '../users/users.module';
+import { NesModule } from '../modules/nes/nes.module';
+import { UsersModule } from '../modules/users/users.module';
 
 @Module({
   imports: [
@@ -36,8 +36,8 @@ import { UsersModule } from '../users/users.module';
           database: configService.get(EnumConfig.DB_DATABASE),
           timezone: 'local',
           charset: 'utf8mb4',
-          entities: [],
-          synchronize: configService.get(EnumConfig.DB_SYNC),
+          entities: [User], //  在这里注册实体类
+          synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
           logging: process.env.NODE_ENV === 'development',
         }) as TypeOrmModuleAsyncOptions,
     }),
