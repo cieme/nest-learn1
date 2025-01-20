@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { ConfigService } from '@nestjs/config';
+import { AppModule } from './App/app.module';
+import * as chalk from 'chalk';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  const configService = app.get(ConfigService);
+  const PORT = configService.get('port');
+  await app.listen(PORT);
+  console.log(chalk.white(`http://localhost:${PORT}`));
 }
 bootstrap();

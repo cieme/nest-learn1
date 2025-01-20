@@ -97,3 +97,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+
+sequelize-cli [sequelize-cli](https://www.bilibili.com/video/BV1HE42157zV?spm_id_from=333.788.videopod.episodes&vd_source=76e521241bb64948f1407543962a23d3&p=9)

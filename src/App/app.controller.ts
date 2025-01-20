@@ -1,4 +1,5 @@
-import { Controller, Get, Inject, Post, Headers } from '@nestjs/common';
+import { Controller, Get, Inject, Post, Headers, Body } from '@nestjs/common';
+
 import { AppService } from './app.service';
 
 @Controller()
@@ -18,7 +19,8 @@ export class AppController {
   }
 
   @Post('/test')
-  PTest(@Headers() header: Headers): any {
+  PTest(@Headers() header: Headers, @Body() body: Body): any {
+    console.log(body);
     return {
       text: 'post' + this.appService.test(),
       header,
