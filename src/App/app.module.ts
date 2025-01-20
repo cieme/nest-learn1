@@ -3,8 +3,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TypeOrmModule, type TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
+
 import { AppService } from './app.service';
+
 import config, { EnumConfig } from '../config/config';
+
+// import { User } from '../modules/users/entities/users.entity';
+
+import { NesModule } from '../nes/nes.module';
+import { UsersModule } from '../users/users.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,6 +41,8 @@ import config, { EnumConfig } from '../config/config';
           logging: process.env.NODE_ENV === 'development',
         }) as TypeOrmModuleAsyncOptions,
     }),
+    NesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [{ provide: 'AppService', useClass: AppService }],
