@@ -15,8 +15,8 @@ export class User {
   })
   name: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({ default: 1 })
+  isActive: number;
 
   @Column({ type: 'int' })
   age: number;

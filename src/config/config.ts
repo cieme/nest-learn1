@@ -21,3 +21,8 @@ export enum EnumConfig {
 
   DB_SYNC = 'DB_SYNC',
 }
+export function loadEnv() {
+  const mode = process.env.NODE_ENV;
+  console.log(mode);
+  return [`.env.${mode}.local`, `.env.${mode}`, `.env`];
+}

@@ -10,21 +10,20 @@ import config, { EnumConfig } from '../config/config';
 
 import { User } from '../modules/users/entities/users.entity';
 
-import { NesModule } from '../modules/nes/nes.module';
 import { UsersModule } from '../modules/users/users.module';
-
+import { loadEnv } from '../config/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env.development.local', '.env'],
+      envFilePath: loadEnv(),
       isGlobal: true, // apply to all modules
       load: [config],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        ({
+      useFactory: (configService: ConfigService) => {
+        return {
           autoLoadEntities: true,
           //通过process.env对象获取也没有问题
           type: configService.get(EnumConfig.DB_TYPE),
@@ -39,9 +38,9 @@ import { UsersModule } from '../modules/users/users.module';
           entities: [User], //  在这里注册实体类
           synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
           logging: process.env.NODE_ENV === 'development',
-        }) as TypeOrmModuleAsyncOptions,
+        } as TypeOrmModuleAsyncOptions;
+      },
     }),
-    NesModule,
     UsersModule,
   ],
   controllers: [AppController],
