@@ -12,8 +12,11 @@ async function bootstrap() {
   const PORT = configService.get('port');
 
   const options = new DocumentBuilder()
-    .setTitle('CMS接口文档')
-    .setVersion('1.0')
+    .setTitle('测试文档')
+    .setDescription(
+      'Background system based on Nest.js + Vue3 full stack development',
+    )
+    .setVersion('1.0.x')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
