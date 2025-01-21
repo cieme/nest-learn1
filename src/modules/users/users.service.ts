@@ -10,11 +10,11 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
   /**
-   * 查所有人
+   * 查所有人,只查两个字段
    * @returns
    */
   findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.usersRepository.find({ select: ['id', 'age'] });
   }
   /**
    *
@@ -32,13 +32,14 @@ export class UsersService {
    * 分页查询
    * @returns
    */
-  findActiveUsers(): Promise<User[]> {
+  findActiveUsers(isActive: 0 | 1): Promise<User[]> {
     return this.usersRepository.find({
       where: {
-        isActive: 1,
+        isActive,
       },
-      skip: 10, // skip
-      take: 10,
+      select: ['id', 'age', 'isActive'],
+      skip: 1, // 跳过一条
+      take: 10, // 查十条
     });
   }
 }

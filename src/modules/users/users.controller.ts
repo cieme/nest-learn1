@@ -1,4 +1,12 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseInterceptors,
+  Query,
+  // HttpException,
+  // HttpStatus,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 
@@ -15,7 +23,7 @@ export class UsersController {
     return this.userService.findOne(id);
   }
   @Get('/findActiveUsers')
-  findActiveUsers() {
-    return this.userService.findActiveUsers();
+  findActiveUsers(@Query('isActive') isActive: 0 | 1) {
+    return this.userService.findActiveUsers(isActive);
   }
 }
