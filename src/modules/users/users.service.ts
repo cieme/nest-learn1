@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { User } from './entities/users.entity';
 
 @Injectable()
@@ -9,6 +10,12 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
+
+  async create(userInstance) {
+    const user = await this.usersRepository.create(userInstance);
+    return this.usersRepository.save(user);
+  }
+
   /**
    * 查所有人,只查两个字段
    * @returns
