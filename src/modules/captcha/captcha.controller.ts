@@ -16,7 +16,14 @@ export class CaptchaController {
   constructor(
     @Inject('CaptchaServiceAlias')
     private readonly captchaService: CaptchaService,
-  ) {}
+    @Inject('AppCode')
+    private readonly AppCode: string[],
+    @Inject('AppInfo')
+    private readonly AppInfo: any,
+  ) {
+    console.log(this.AppCode);
+    console.log(this.AppInfo);
+  }
 
   @Post('create')
   create() {

@@ -39,7 +39,7 @@ import { loadEnv } from '../config/config';
           charset: 'utf8mb4',
           entities: [User], //  在这里注册实体类
           synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
-          logging: process.env.NODE_ENV === 'development',
+          logging: false,
         } as TypeOrmModuleAsyncOptions;
       },
     }),
