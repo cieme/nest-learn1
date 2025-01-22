@@ -12,6 +12,7 @@ import { User } from '@/modules/users/entities/users.entity';
 
 import { UsersModule } from '@/modules/users/users.module';
 import { CaptchaModule } from '@/modules/captcha/captcha.module';
+import { UploadModule } from '@/modules/upload/upload.module';
 import { loadEnv } from '../config/config';
 
 @Module({
@@ -45,6 +46,7 @@ import { loadEnv } from '../config/config';
     }),
     UsersModule,
     CaptchaModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [{ provide: 'AppService', useClass: AppService }],
