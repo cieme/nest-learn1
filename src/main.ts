@@ -20,6 +20,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
+  app.setGlobalPrefix('api');
   app.use(globalMiddleware);
   await app.listen(PORT);
   console.log(chalk.white(`http://localhost:${PORT}`));
