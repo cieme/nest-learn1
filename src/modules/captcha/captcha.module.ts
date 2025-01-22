@@ -1,4 +1,11 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+import { LoggerMiddleware } from '@/common/middleware/logger/logger.middleware';
+
 import { CaptchaService } from './captcha.service';
 import { CaptchaService2 } from './captcha.service2';
 import { CaptchaController } from './captcha.controller';
@@ -25,4 +32,13 @@ import { CaptchaController } from './captcha.controller';
     },
   ],
 })
-export class CaptchaModule {}
+export class CaptchaModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .exclude('captcha/validateCaptcha')
+      .forRoutes({ path: '/captcha/create', method: RequestMethod.ALL });
+    // consumer.apply(LoggerMiddleware).forRoutes(CaptchaController);
+    // consumer.apply(LoggerMiddleware).forRoutes('captcha');
+  }
+}

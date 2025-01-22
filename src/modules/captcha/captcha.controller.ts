@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   UseInterceptors,
@@ -25,10 +26,11 @@ export class CaptchaController {
     console.log(this.AppInfo);
   }
 
-  @Post('create')
+  @Get('create')
   create() {
     return this.captchaService.create();
   }
+
   @Post('validate')
   async validateCaptcha(
     @Body('sessionId') sessionId: string,
