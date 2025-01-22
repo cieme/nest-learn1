@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as cors from 'cors';
 import { AppModule } from './App/app.module';
 import { globalMiddleware } from '@/common/middlewares/globalMiddleware/global.middleware';
 import * as chalk from 'chalk';
@@ -21,6 +22,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
   app.setGlobalPrefix('api');
+  app.use(cors());
   app.use(globalMiddleware);
   await app.listen(PORT);
   console.log(chalk.white(`http://localhost:${PORT}`));
