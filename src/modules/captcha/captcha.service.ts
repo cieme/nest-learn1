@@ -22,7 +22,7 @@ export class CaptchaService {
     // 存储到 Redis，设置 5 分钟过期时间
     await this.redisClient.set(sessionId, captcha.text, 'EX', 5 * 60);
 
-    return { data: captcha.data, id: sessionId };
+    return { id: sessionId, data: captcha.data };
   }
   async validateCaptcha(sessionId: string, input: string): Promise<boolean> {
     const storedCaptcha = await this.redisClient.get(sessionId);

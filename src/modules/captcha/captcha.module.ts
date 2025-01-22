@@ -4,6 +4,11 @@ import { CaptchaController } from './captcha.controller';
 
 @Module({
   controllers: [CaptchaController],
-  providers: [CaptchaService],
+  providers: [
+    {
+      provide: 'CaptchaServiceAlias',
+      useClass: CaptchaService,
+    },
+  ],
 })
 export class CaptchaModule {}

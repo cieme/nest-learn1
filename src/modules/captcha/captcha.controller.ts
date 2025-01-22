@@ -5,6 +5,7 @@ import {
   UseInterceptors,
   HttpException,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 import { CaptchaService } from './captcha.service';
@@ -12,7 +13,10 @@ import { CaptchaService } from './captcha.service';
 @Controller('captcha')
 @UseInterceptors(TransformInterceptor)
 export class CaptchaController {
-  constructor(private readonly captchaService: CaptchaService) {}
+  constructor(
+    @Inject('CaptchaServiceAlias')
+    private readonly captchaService: CaptchaService,
+  ) {}
 
   @Post('create')
   create() {
