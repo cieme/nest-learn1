@@ -10,7 +10,7 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const number = Math.random() * 100;
     if (number < 50) {
-      throw new HttpException('被拦截了', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     } else {
       next();
     }

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './App/app.module';
-
+import { globalMiddleware } from '@/common/middlewares/globalMiddleware/global.middleware';
 import * as chalk from 'chalk';
 
 async function bootstrap() {
@@ -20,7 +20,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
-
+  app.use(globalMiddleware);
   await app.listen(PORT);
   console.log(chalk.white(`http://localhost:${PORT}`));
 }

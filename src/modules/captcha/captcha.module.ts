@@ -4,7 +4,7 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { LoggerMiddleware } from '@/common/middleware/logger/logger.middleware';
+import { LoggerMiddleware } from '@/common/middlewares/logger/logger.middleware';
 
 import { CaptchaService } from './captcha.service';
 import { CaptchaService2 } from './captcha.service2';
