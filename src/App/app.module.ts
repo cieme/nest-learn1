@@ -8,10 +8,12 @@ import { AppService } from './app.service';
 
 import config, { EnumConfig } from '../config/config';
 
-import { User } from '../modules/users/entities/users.entity';
+import { User } from '@/modules/users/entities/users.entity';
 
-import { UsersModule } from '../modules/users/users.module';
+import { UsersModule } from '@/modules/users/users.module';
+import { CaptchaModule } from '@/modules/captcha/captcha.module';
 import { loadEnv } from '../config/config';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -42,6 +44,7 @@ import { loadEnv } from '../config/config';
       },
     }),
     UsersModule,
+    CaptchaModule,
   ],
   controllers: [AppController],
   providers: [{ provide: 'AppService', useClass: AppService }],
