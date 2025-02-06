@@ -21,10 +21,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
-  app.setGlobalPrefix('api');
+  const PREFIX = `api`;
+  app.setGlobalPrefix(PREFIX);
   app.use(cors());
   app.use(globalMiddleware);
   await app.listen(PORT);
-  console.log(chalk.white(`http://localhost:${PORT}`));
+  console.log(chalk.white(`http://localhost:${PORT}/${PREFIX}`));
 }
 bootstrap();
