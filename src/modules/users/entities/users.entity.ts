@@ -9,7 +9,7 @@ export class User {
 
   @Column({
     type: 'varchar',
-    length: 255,
+    length: 100,
     unique: true,
     comment: '用户名',
   })

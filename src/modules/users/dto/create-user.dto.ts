@@ -34,7 +34,7 @@ export class CreateUserDto extends User {
   readonly isActive: 0 | 1;
 
   @IsNumber()
-  @Min(18)
+  @Min(1)
   readonly age: number;
 }
 // 指定对象格式

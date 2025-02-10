@@ -8,6 +8,8 @@ import {
   Body,
   UsePipes,
   ValidationPipe,
+  Put,
+  Patch,
   // HttpCode,
   // HttpStatus,
   // HttpException,
@@ -46,5 +48,13 @@ export class UsersController {
   @Get('/findActiveUsers')
   findActiveUsers(@Query('isActive') isActive: 0 | 1) {
     return this.userService.findActiveUsers(isActive);
+  }
+  @Put('update')
+  updateUser(@Body() createItemDto: CreateUserDto) {
+    return this.userService.update(createItemDto);
+  }
+  @Patch('patch')
+  patchUser(@Body() createItemDto: CreateUserDto) {
+    return this.userService.patch(createItemDto);
   }
 }

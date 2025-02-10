@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
 
 @Injectable()
@@ -23,6 +23,7 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.usersRepository.find({ select: ['id', 'age'] });
   }
+
   /**
    *
    * @param id 找某人
@@ -34,6 +35,29 @@ export class UsersService {
         id,
       },
     });
+  }
+  async update(userInstance: CreateUserDto) {
+    const user = await this.usersRepository.preload({
+      id: userInstance.id, // 主键
+      ...userInstance,
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userInstance.id} not found`);
+    }
+
+    return this.usersRepository.findOne({ where: { id: userInstance.id } });
+    // return this.usersRepository.save(user); // 保存后返回更新后的数据
+  }
+  async patch(userInstance: CreateUserDto) {
+    const updateResult = await this.usersRepository.update(userInstance.id, {
+      name: userInstance.name,
+    });
+    // 2. 检查是否有更新（受影响的行数）
+    if (updateResult.affected === 0) {
+      throw new NotFoundException(`User with ID ${userInstance.id} not found`);
+    }
+    return this.usersRepository.findOne({ where: { id: userInstance.id } });
   }
   /**
    * 分页查询

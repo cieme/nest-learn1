@@ -27,6 +27,7 @@ import { loadEnv } from '../config/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
+          name: 'mysql',
           autoLoadEntities: true,
           //通过process.env对象获取也没有问题
           type: configService.get(EnumConfig.DB_TYPE),
@@ -42,6 +43,25 @@ import { loadEnv } from '../config/config';
           synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
           logging: false,
         } as TypeOrmModuleAsyncOptions;
+      },
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory() {
+        return {
+          name: 'mongodb',
+          autoLoadEntities: true,
+          type: 'mongodb',
+          host: 'localhost',
+          port: 27017,
+          username: 'root',
+          password: 'root',
+          timezone: 'local',
+          charset: 'utf8mb4',
+          synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
+          logging: false,
+        };
       },
     }),
     UsersModule,
