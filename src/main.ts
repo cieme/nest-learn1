@@ -5,7 +5,17 @@ import * as cors from 'cors';
 import { AppModule } from './App/app.module';
 import { globalMiddleware } from '@/common/middlewares/globalMiddleware/global.middleware';
 import * as chalk from 'chalk';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
+const proxyOptions = {
+  pathFilter: '/simulation',
+  target: 'http://192.168.20.72', // 代理 ip
+  changeOrigin: true,
+  ws: true,
+  pathRewrite: {
+    '/simulation': '/simulation',
+  },
+};
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -24,6 +34,7 @@ async function bootstrap() {
   const PREFIX = `api`;
   app.setGlobalPrefix(PREFIX);
   app.use(cors());
+  app.use(createProxyMiddleware(proxyOptions));
   app.use(globalMiddleware);
   await app.listen(PORT);
   console.log(chalk.white(`http://localhost:${PORT}/${PREFIX}`));
