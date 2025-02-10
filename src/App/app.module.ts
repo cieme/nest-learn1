@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TypeOrmModule, type TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 
 import { AppService } from './app.service';
@@ -25,9 +26,9 @@ import { loadEnv } from '../config/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      name: 'mysql',
       useFactory: (configService: ConfigService) => {
         return {
-          name: 'mysql',
           autoLoadEntities: true,
           //通过process.env对象获取也没有问题
           type: configService.get(EnumConfig.DB_TYPE),
@@ -45,22 +46,16 @@ import { loadEnv } from '../config/config';
         } as TypeOrmModuleAsyncOptions;
       },
     }),
-    TypeOrmModule.forRootAsync({
+    MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      connectionName: 'mongodb',
       useFactory() {
         return {
-          name: 'mongodb',
-          autoLoadEntities: true,
-          type: 'mongodb',
-          host: 'localhost',
-          port: 27017,
-          username: 'root',
-          password: 'root',
-          timezone: 'local',
-          charset: 'utf8mb4',
-          synchronize: process.env.NODE_ENV === 'development', // （生产环境不要开启）
-          logging: false,
+          uri: `mongodb://localhost:27017`,
+          dbName: 'pmg',
+          user: 'root',
+          pass: 'root',
         };
       },
     }),

@@ -34,7 +34,13 @@ export class UsersController {
     return this.userService.create(createItemDto);
     // throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
   }
-
+  @Post('/create-mongo')
+  async createUserInMongoDB(
+    @Body('name') name: string,
+    @Body('age') age: string,
+  ) {
+    return await this.userService.createUserInMongoDB(name, age);
+  }
   @ApiOperation({ summary: '用户列表' })
   @ApiOkResponse({ type: CreateUserDto, isArray: true })
   @Get('/findAllUsers')

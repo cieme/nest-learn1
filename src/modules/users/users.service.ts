@@ -1,21 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/users.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserDocument } from './schema/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
+    @InjectRepository(User, 'mysql')
     private usersRepository: Repository<User>,
+    @InjectModel('pmg_user', 'mongodb')
+    private readonly userModel: Model<UserDocument>,
   ) {}
 
   async create(userInstance) {
     const user = await this.usersRepository.create(userInstance);
     return this.usersRepository.save(user);
   }
-
+  async createUserInMongoDB(name: string, age: string): Promise<UserDocument> {
+    const newUser = new this.userModel({ name, age });
+    console.log(newUser);
+    return newUser.save();
+  }
   /**
    * 查所有人,只查两个字段
    * @returns
