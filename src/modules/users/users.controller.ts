@@ -19,6 +19,8 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'; // swagg
 import { UsersService } from './users.service';
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindUserDto } from './dto/find-user.dto';
+// UsePipes 管道
 @ApiTags('用户管理')
 @Controller('users')
 @UseInterceptors(TransformInterceptor)
@@ -57,9 +59,11 @@ export class UsersController {
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
   }
-  @Get('/findUserByIdMongoDb/:id')
-  findUserByIdMongoDb(@Param('id') id: number) {
-    return this.userService.findOneInMongoDb(id);
+
+  @Get('/findUserByIdMongoDb')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  findUserByIdMongoDb(@Body() search: FindUserDto) {
+    return this.userService.findOneInMongoDb(search.id);
   }
 
   @Get('/findActiveUsers')

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
 import { User } from './entities/users.entity';
@@ -41,7 +45,17 @@ export class UsersService {
     // return this.userModel.find({}).select(['age', 'name']).exec();
   }
   async findOneInMongoDb(id: number): Promise<User> {
-    return this.userModel.findById(id).select(['age', 'name']).exec();
+    const user = await this.userModel
+      .findById(id)
+      .select(['age', 'name'])
+      .catch(() => {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      });
+
+    if (!user) {
+      throw new BadRequestException(`User with ID ${id} not found`);
+    }
+    return user;
   }
 
   /**
@@ -79,10 +93,15 @@ export class UsersService {
         { new: true }, // 返回更新后的数据,false 返回更新前的数据
       )
       .catch(() => {
+        // 数据库没有查到数据
         throw new NotFoundException(
           `User with ID ${userInstance.id} not found`,
         );
       });
+    // 没有id字段。查找成功，但是没有数据
+    if (!updateResult) {
+      throw new NotFoundException(`User with ID ${userInstance.id} not found`);
+    }
     return updateResult;
   }
   async patch(userInstance: CreateUserDto) {
