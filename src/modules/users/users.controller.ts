@@ -36,13 +36,7 @@ export class UsersController {
     return this.userService.create(createItemDto);
     // throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
   }
-  @Post('/create-mongo')
-  async createUserInMongoDB(
-    @Body('name') name: string,
-    @Body('age') age: string,
-  ) {
-    return await this.userService.createUserInMongoDB(name, age);
-  }
+
   @ApiOperation({ summary: '用户列表' })
   @ApiOkResponse({ type: CreateUserDto, isArray: true })
   @Get('/findAllUsers')
@@ -50,9 +44,10 @@ export class UsersController {
     return this.userService.findAll();
   }
 
-  @Get('/findAllInMongoDb')
-  findAllInMongoDb() {
-    return this.userService.findAllInMongoDb();
+  @Get('findList')
+  findList(@Body() search: { keyWord: string }) {
+    // {"name":"李"}
+    return this.userService.findList(search.keyWord);
   }
 
   @Get('/findUserById/:id')
@@ -60,38 +55,26 @@ export class UsersController {
     return this.userService.findOne(id);
   }
 
-  @Get('/findUserByIdMongoDb')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  findUserByIdMongoDb(@Body() search: FindUserDto) {
-    return this.userService.findOneInMongoDb(search.id);
-  }
-
   @Get('/findActiveUsers')
   findActiveUsers(@Query('isActive') isActive: 0 | 1) {
     return this.userService.findActiveUsers(isActive);
-  }
-  @Get('/findActiveUsersMongo')
-  findActiveUsersMongo(@Query('isActive') isActive: 0 | 1) {
-    return this.userService.findActiveUsersMongo(isActive);
   }
 
   @Put('update')
   updateUser(@Body() createItemDto: CreateUserDto) {
     return this.userService.update(createItemDto);
   }
-  @Put('updateMongo')
-  updateUserByIdMongo(@Body() createItemDto: CreateUserDto) {
-    return this.userService.updateByIdMongo(createItemDto);
-  }
+
   @Patch('patch')
   patchUser(@Body() createItemDto: CreateUserDto) {
     return this.userService.patch(createItemDto);
   }
-  @Get('findList')
-  findList(@Body() search: { keyWord: string }) {
-    // {"name":"李"}
-    return this.userService.findList(search.keyWord);
+
+  @Get('/findAllInMongoDb')
+  findAllInMongoDb() {
+    return this.userService.findAllInMongoDb();
   }
+
   @Get('findListMongo')
   findListMongo(
     @Body() search: { keyWord: string; page: number; limit: number },
@@ -101,5 +84,29 @@ export class UsersController {
       search.page,
       search.limit,
     );
+  }
+
+  @Get('/findActiveUsersMongo')
+  findActiveUsersMongo(@Query('isActive') isActive: 0 | 1) {
+    return this.userService.findActiveUsersMongo(isActive);
+  }
+
+  @Get('/findOneInMongoDb')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  findOneInMongoDb(@Body() search: FindUserDto) {
+    return this.userService.findOneInMongoDb(search.id);
+  }
+
+  @Post('/create-mongo')
+  async createUserInMongoDB(
+    @Body('name') name: string,
+    @Body('age') age: string,
+  ) {
+    return await this.userService.createUserInMongoDB(name, age);
+  }
+
+  @Put('updateByIdMongo')
+  updateUserByIdMongo(@Body() createItemDto: CreateUserDto) {
+    return this.userService.updateByIdMongo(createItemDto);
   }
 }
