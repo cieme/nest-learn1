@@ -47,20 +47,55 @@ export class UsersController {
   findAll() {
     return this.userService.findAll();
   }
+
+  @Get('/findAllInMongoDb')
+  findAllInMongoDb() {
+    return this.userService.findAllInMongoDb();
+  }
+
   @Get('/findUserById/:id')
   findOne(@Param('id') id: number) {
     return this.userService.findOne(id);
   }
+  @Get('/findUserByIdMongoDb/:id')
+  findUserByIdMongoDb(@Param('id') id: number) {
+    return this.userService.findOneInMongoDb(id);
+  }
+
   @Get('/findActiveUsers')
   findActiveUsers(@Query('isActive') isActive: 0 | 1) {
     return this.userService.findActiveUsers(isActive);
   }
+  @Get('/findActiveUsersMongo')
+  findActiveUsersMongo(@Query('isActive') isActive: 0 | 1) {
+    return this.userService.findActiveUsersMongo(isActive);
+  }
+
   @Put('update')
   updateUser(@Body() createItemDto: CreateUserDto) {
     return this.userService.update(createItemDto);
   }
+  @Put('updateMongo')
+  updateUserByIdMongo(@Body() createItemDto: CreateUserDto) {
+    return this.userService.updateByIdMongo(createItemDto);
+  }
   @Patch('patch')
   patchUser(@Body() createItemDto: CreateUserDto) {
     return this.userService.patch(createItemDto);
+  }
+  @Get('findList')
+  findList(@Body() search: { keyWord: string }) {
+    // {"name":"李"}
+    return this.userService.findList(search.keyWord);
+  }
+  @Get('findListMongo')
+  findListMongo(
+    @Body() search: { keyWord: string; page: number; limit: number },
+  ) {
+    return this.userService.findListMongo(
+      search.keyWord,
+      search.page,
+      search.limit,
+    );
   }
 }
