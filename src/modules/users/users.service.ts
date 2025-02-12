@@ -166,8 +166,12 @@ export class UsersService {
     return user;
   }
 
-  async createUserInMongoDB(name: string, age: string): Promise<UserDocument> {
-    const newUser = new this.userModel({ name, age });
+  async createUserInMongoDB(
+    name: string,
+    age: number,
+    other,
+  ): Promise<UserDocument> {
+    const newUser = new this.userModel({ name, age, other });
     return newUser.save();
   }
 

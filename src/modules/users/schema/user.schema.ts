@@ -5,6 +5,7 @@ export interface UserDocument extends Document {
   name: string;
   isActive: number;
   age: number;
+  other: any;
 }
 
 export const UserSchema = new Schema<UserDocument>({
@@ -18,4 +19,5 @@ export const UserSchema = new Schema<UserDocument>({
   name: { type: String, required: true },
   isActive: { type: Number, default: 1 },
   age: { type: Number, default: 1 },
+  other: { type: Object }, // 其他属性
 });

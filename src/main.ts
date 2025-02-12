@@ -21,7 +21,10 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const PORT = configService.get('port');
-
+  const PREFIX = `api`;
+  app.setGlobalPrefix(PREFIX);
+  app.use(cors());
+  // 后设置 swagger,这样调试才可以
   const options = new DocumentBuilder()
     .setTitle('测试文档')
     .setDescription(
@@ -29,11 +32,10 @@ async function bootstrap() {
     )
     .setVersion('1.0.x')
     .build();
+
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/docs', app, document);
-  const PREFIX = `api`;
-  app.setGlobalPrefix(PREFIX);
-  app.use(cors());
+
   app.use(createProxyMiddleware(proxyOptions));
   app.use(globalMiddleware);
   await app.listen(PORT);

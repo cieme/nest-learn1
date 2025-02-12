@@ -20,6 +20,7 @@ import { UsersService } from './users.service';
 import { TransformInterceptor } from '@/common/interceptor/transform.interceptor';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { CreateMongoUserDto } from './dto/create-mongo.dot';
 // UsePipes 管道
 @ApiTags('用户管理')
 @Controller('users')
@@ -96,13 +97,15 @@ export class UsersController {
   findOneInMongoDb(@Body() search: FindUserDto) {
     return this.userService.findOneInMongoDb(search.id);
   }
-
+  @ApiOperation({ summary: '创建用户-mongo' })
   @Post('/create-mongo')
-  async createUserInMongoDB(
-    @Body('name') name: string,
-    @Body('age') age: string,
-  ) {
-    return await this.userService.createUserInMongoDB(name, age);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createUserInMongoDB(@Body() body: CreateMongoUserDto) {
+    return await this.userService.createUserInMongoDB(
+      body.name,
+      body.age,
+      body,
+    );
   }
 
   @Put('updateByIdMongo')
